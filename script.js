@@ -21,6 +21,15 @@ filterButtons.forEach((button) => button.addEventListener('click', () => {
   });
 }));
 
+function selectProductCategory(filter) {
+  const button = document.querySelector(`.filter button[data-filter="${filter}"]`);
+  if (button) button.click();
+  document.querySelectorAll('[data-category-jump]').forEach(item => item.classList.toggle('active', item.dataset.categoryJump === filter));
+}
+document.querySelectorAll('[data-category-jump]').forEach(item => item.addEventListener('click', () => selectProductCategory(item.dataset.categoryJump)));
+const requestedCategory = new URLSearchParams(location.search).get('category');
+if (requestedCategory) selectProductCategory(requestedCategory);
+
 const productSlugs = {
   'ASARASUPER 500SC': 'asarasuper', 'USATABON 17.5WP': 'usatabon',
   'ACTATOC 200WP': 'actatoc', 'TECHTIME 50WG': 'techtime',
