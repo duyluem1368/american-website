@@ -177,7 +177,33 @@ if (trustStrip && aboutSection) {
   if (journeySection) aboutSection.after(journeySection);
 }
 
-const activityButtons = [...document.querySelectorAll('[data-activity-image]')];
+const activityPriority = [
+  'activity-03.webp', 'activity-02.webp', 'trip-01.webp', 'activity-04.webp',
+  'activity-12.webp', 'activity-11.webp', 'trip-08.webp', 'trip-12.webp',
+  'trip-05.webp', 'trip-07.webp', 'trip-04.webp', 'trip-06.webp',
+  'trip-09.webp', 'trip-11.webp', 'trip-13.webp', 'trip-10.webp',
+  'activity-13.webp', 'activity-07.webp', 'activity-01.webp', 'activity-09.webp',
+  'activity-10.webp', 'trip-03.webp', 'activity-05.webp', 'activity-06.webp',
+  'activity-08.webp', 'trip-02.webp'
+];
+let activityButtons = [...document.querySelectorAll('[data-activity-image]')];
+if (journeySection && activityButtons.length) {
+  activityButtons.sort((left, right) => {
+    const leftName = left.dataset.activityImage.split('/').pop();
+    const rightName = right.dataset.activityImage.split('/').pop();
+    return activityPriority.indexOf(leftName) - activityPriority.indexOf(rightName);
+  });
+  const gallery = document.createElement('div');
+  gallery.className = 'journey-unified-gallery';
+  gallery.setAttribute('aria-label', 'Hình ảnh hành trình American theo quy mô tập thể giảm dần');
+  activityButtons.forEach((button, index) => {
+    button.className = `journey-gallery-item${index === 0 ? ' gallery-lead' : index < 3 ? ' gallery-wide' : ''}`;
+    button.dataset.eventLabel = button.dataset.activityGallery === 'nha-trang' ? 'Nha Trang 2024' : 'Kỷ niệm 15 năm';
+    gallery.appendChild(button);
+  });
+  journeySection.querySelector('.journey-head').after(gallery);
+  journeySection.querySelectorAll('.journey-strip,.journey-hint,.journey-album-head').forEach((element) => element.remove());
+}
 if (activityButtons.length) {
   const activityDialog = document.createElement('dialog');
   activityDialog.className = 'activity-lightbox';
@@ -185,20 +211,17 @@ if (activityButtons.length) {
   activityDialog.innerHTML = '<button class="activity-close" type="button" aria-label="Đóng ảnh">×</button><button class="activity-arrow activity-prev" type="button" aria-label="Ảnh trước">←</button><figure><img alt=""><figcaption></figcaption></figure><button class="activity-arrow activity-next" type="button" aria-label="Ảnh tiếp theo">→</button><span class="activity-count"></span>';
   document.body.appendChild(activityDialog);
   let activityIndex = 0;
-  let activeActivityButtons = activityButtons;
   const showActivity = (index) => {
-    activityIndex = (index + activeActivityButtons.length) % activeActivityButtons.length;
-    const source = activeActivityButtons[activityIndex];
+    activityIndex = (index + activityButtons.length) % activityButtons.length;
+    const source = activityButtons[activityIndex];
     const photo = activityDialog.querySelector('img');
     photo.src = source.dataset.activityImage;
     photo.alt = source.dataset.caption;
     activityDialog.querySelector('figcaption').textContent = source.dataset.caption;
-    activityDialog.querySelector('.activity-count').textContent = `${activityIndex + 1} / ${activeActivityButtons.length}`;
+    activityDialog.querySelector('.activity-count').textContent = `${activityIndex + 1} / ${activityButtons.length}`;
   };
   activityButtons.forEach((button) => button.addEventListener('click', () => {
-    const gallery = button.dataset.activityGallery || 'anniversary';
-    activeActivityButtons = activityButtons.filter((item) => (item.dataset.activityGallery || 'anniversary') === gallery);
-    showActivity(activeActivityButtons.indexOf(button));
+    showActivity(activityButtons.indexOf(button));
     document.body.classList.add('modal-open');
     activityDialog.showModal();
   }));
