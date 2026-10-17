@@ -13,7 +13,7 @@ else {
   product.targets.forEach((target, index) => {
     const li = document.createElement('li');
     li.innerHTML = `<span>${String(index + 1).padStart(2,'0')}</span><strong></strong>`;
-    li.querySelector('strong').textContent = target;
+    li.querySelector('strong').textContent = typeof target === 'string' ? target : target.name;
     list.appendChild(li);
   });
 }

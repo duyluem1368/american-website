@@ -32,8 +32,8 @@ if (requestedCategory) selectProductCategory(requestedCategory);
 
 const productSlugs = {
   'ASARASUPER 500SC': 'asarasuper', 'USATABON 17.5WP': 'usatabon',
-  'ACTATOC 200WP': 'actatoc', 'TECHTIME 50WG': 'techtime',
-  'SUPITOC 250EC': 'supitoc', 'SAMTAKO 25SC': 'samtako',
+  'ACTATOC 200WP': 'actatoc', 'TECHTIMEX 50WG': 'techtime',
+  'SUPITOC 250EC': 'supitoc', 'SAMTAKO 20SC': 'samtako',
   'CYTOC 250WP': 'cytoc', 'ABUVA 36EC': 'abuva', 'CLORCET': 'clorcet',
   'NOMICET / NOMIRIUS': 'nomicet', 'ALPHADAX 250WP': 'alphadax',
   'ALYRICE 200WG': 'alyrice', 'SUPERMIL 40SL': 'supermil'
@@ -66,7 +66,7 @@ function targetImage(target) {
 const modal = document.createElement('dialog');
 modal.className = 'product-modal';
 modal.setAttribute('aria-label', 'Thông tin chi tiết sản phẩm');
-modal.innerHTML = '<div class="modal-shell"><button class="modal-close" type="button" aria-label="Đóng cửa sổ">×</button><div class="modal-top"><div class="modal-product-image"><img alt=""></div><div class="modal-summary"><small data-modal-category></small><h2 data-modal-name></h2><div class="modal-active"><span>Thành phần hoạt chất</span><strong data-modal-active></strong></div><a class="button button-primary" href="contact.html">Liên hệ tư vấn</a></div></div><div class="modal-analysis"><p class="eyebrow blue">Cơ chế & tác dụng</p><p data-modal-analysis></p></div><div class="modal-target-wrap"><p class="eyebrow blue">Đối tượng gây hại ưu tiên</p><div class="modal-targets" data-modal-targets></div></div><p class="modal-note">Lưu ý: Đọc kỹ nhãn sản phẩm; chỉ sử dụng theo cây trồng, đối tượng, liều lượng và hướng dẫn đã được đăng ký.</p></div>';
+modal.innerHTML = '<div class="modal-shell"><button class="modal-close" type="button" aria-label="Đóng cửa sổ">×</button><div class="modal-top"><div class="modal-product-image"><img alt=""></div><div class="modal-summary"><small data-modal-category></small><h2 data-modal-name></h2><div class="modal-active"><span>Thành phần hoạt chất</span><strong data-modal-active></strong></div><a class="button button-primary" href="contact.html">Liên hệ tư vấn</a></div></div><div class="modal-analysis"><p class="eyebrow blue">Cơ chế & tác dụng</p><p data-modal-analysis></p></div><div class="modal-target-wrap"><p class="eyebrow blue">Đối tượng gây hại ưu tiên</p><div class="modal-targets" data-modal-targets></div></div><p class="modal-source" data-modal-source></p><p class="modal-note">Lưu ý: Đọc kỹ nhãn sản phẩm; chỉ sử dụng theo cây trồng, đối tượng, liều lượng và hướng dẫn đã được đăng ký.</p></div>';
 document.body.appendChild(modal);
 modal.querySelector('.modal-close').addEventListener('click', () => modal.close());
 modal.addEventListener('click', (event) => { if (event.target === modal) modal.close(); });
@@ -82,12 +82,15 @@ function openProductModal(product) {
   const targets = modal.querySelector('[data-modal-targets]');
   targets.replaceChildren();
   product.targets.forEach((target, index) => {
+    const targetName = typeof target === 'string' ? target : target.name;
+    const targetPhoto = typeof target === 'string' ? targetImage(target) : target.image;
     const item = document.createElement('article');
-    item.innerHTML = `<img src="${targetImage(target)}" alt=""><div><span>${String(index + 1).padStart(2,'0')}</span><strong></strong></div>`;
-    item.querySelector('img').alt = `Hình minh họa ${target}`;
-    item.querySelector('strong').textContent = target;
+    item.innerHTML = `<img src="${targetPhoto}" alt=""><div><span>${String(index + 1).padStart(2,'0')}</span><strong></strong></div>`;
+    item.querySelector('img').alt = `Hình nhận diện ${targetName}`;
+    item.querySelector('strong').textContent = targetName;
     targets.appendChild(item);
   });
+  modal.querySelector('[data-modal-source]').innerHTML = `Nguồn đối chiếu kỹ thuật: ${product.source || 'Nhãn sản phẩm'}. Ảnh nhận diện: Wikimedia Commons. <a href="sources.html">Xem nguồn và bản quyền ảnh →</a>`;
   document.body.classList.add('modal-open');
   modal.showModal();
 }
