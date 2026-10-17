@@ -21,7 +21,7 @@ document.querySelectorAll('#primary-nav a').forEach((link) => link.addEventListe
   menuButton.setAttribute('aria-expanded', 'false');
 }));
 
-const productCards = document.querySelectorAll('.product-card');
+const catalogProductCards = document.querySelectorAll('.catalog .product-card');
 const categoryMeta = {
   insect: ['Thuốc trừ sâu', 'Các sản phẩm quản lý sâu ăn lá, sâu đục thân, rầy, rệp và côn trùng chích hút.'],
   disease: ['Thuốc trừ bệnh', 'Các sản phẩm phòng và quản lý bệnh do nấm, vi khuẩn trên cây trồng.'],
@@ -35,8 +35,8 @@ document.querySelectorAll('[data-category-count]').forEach((counter) => {
 });
 
 function selectProductCategory(filter, updateUrl = true) {
-  if (!categoryMeta[filter] || !productCards.length) return;
-  productCards.forEach((card) => {
+  if (!categoryMeta[filter] || !catalogProductCards.length) return;
+  catalogProductCards.forEach((card) => {
     card.hidden = card.dataset.category !== filter;
   });
   document.querySelectorAll('[data-category-jump]').forEach((item) => {
@@ -57,14 +57,28 @@ function selectProductCategory(filter, updateUrl = true) {
 }
 document.querySelectorAll('[data-category-jump]').forEach(item => item.addEventListener('click', () => selectProductCategory(item.dataset.categoryJump)));
 const requestedCategory = new URLSearchParams(location.search).get('category');
-if (productCards.length) selectProductCategory(categoryMeta[requestedCategory] ? requestedCategory : 'insect', false);
+if (catalogProductCards.length) selectProductCategory(categoryMeta[requestedCategory] ? requestedCategory : 'insect', false);
+
+const featuredProductCards = document.querySelectorAll('#products .product-card');
+document.querySelectorAll('#products [data-filter]').forEach((button) => {
+  button.addEventListener('click', () => {
+    const filter = button.dataset.filter;
+    featuredProductCards.forEach((card) => {
+      card.hidden = filter !== 'all' && card.dataset.category !== filter;
+    });
+    document.querySelectorAll('#products [data-filter]').forEach((item) => {
+      item.classList.toggle('active', item === button);
+      item.setAttribute('aria-pressed', String(item === button));
+    });
+  });
+});
 
 const productSlugs = {
   'ASARASUPER 500SC': 'asarasuper', 'USATABON 17.5WP': 'usatabon',
   'ACTATOC 200WP': 'actatoc', 'TECHTIMEX 50WG': 'techtime',
   'SUPITOC 250EC': 'supitoc', 'FITEX X2 300EC': 'fitex', 'SECTOR 100WP': 'sector', 'SAMTAKO 20SC': 'samtako',
   'CYTOC 250WP': 'cytoc', 'ABUVA 36EC': 'abuva', 'CLORCET': 'clorcet',
-  'NOMICET / NOMIRIUS': 'nomicet', 'ALPHADAX 250WP': 'alphadax',
+  'NOMICET / NOMIRIUS': 'nomicet', 'CỎ CẶP NOMICET / NOMIRIUS': 'nomicet', 'ALPHADAX 250WP': 'alphadax',
   'ALYRICE 200WG': 'alyrice', 'SIRAFB 100WP': 'sirafb', 'SUPERMIL 40SL': 'supermil', 'GOLDVIL 50SC': 'goldvil',
   'ZIMVIL 720WP': 'zimvil', 'BEMGREEN 750WP': 'bemgreen'
 };
