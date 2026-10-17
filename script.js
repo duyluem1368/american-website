@@ -185,17 +185,20 @@ if (activityButtons.length) {
   activityDialog.innerHTML = '<button class="activity-close" type="button" aria-label="Đóng ảnh">×</button><button class="activity-arrow activity-prev" type="button" aria-label="Ảnh trước">←</button><figure><img alt=""><figcaption></figcaption></figure><button class="activity-arrow activity-next" type="button" aria-label="Ảnh tiếp theo">→</button><span class="activity-count"></span>';
   document.body.appendChild(activityDialog);
   let activityIndex = 0;
+  let activeActivityButtons = activityButtons;
   const showActivity = (index) => {
-    activityIndex = (index + activityButtons.length) % activityButtons.length;
-    const source = activityButtons[activityIndex];
+    activityIndex = (index + activeActivityButtons.length) % activeActivityButtons.length;
+    const source = activeActivityButtons[activityIndex];
     const photo = activityDialog.querySelector('img');
     photo.src = source.dataset.activityImage;
     photo.alt = source.dataset.caption;
     activityDialog.querySelector('figcaption').textContent = source.dataset.caption;
-    activityDialog.querySelector('.activity-count').textContent = `${activityIndex + 1} / ${activityButtons.length}`;
+    activityDialog.querySelector('.activity-count').textContent = `${activityIndex + 1} / ${activeActivityButtons.length}`;
   };
-  activityButtons.forEach((button, index) => button.addEventListener('click', () => {
-    showActivity(index);
+  activityButtons.forEach((button) => button.addEventListener('click', () => {
+    const gallery = button.dataset.activityGallery || 'anniversary';
+    activeActivityButtons = activityButtons.filter((item) => (item.dataset.activityGallery || 'anniversary') === gallery);
+    showActivity(activeActivityButtons.indexOf(button));
     document.body.classList.add('modal-open');
     activityDialog.showModal();
   }));
