@@ -85,12 +85,13 @@ function openProductModal(product) {
     const targetName = typeof target === 'string' ? target : target.name;
     const targetPhoto = typeof target === 'string' ? targetImage(target) : target.image;
     const item = document.createElement('article');
-    item.innerHTML = `<img src="${targetPhoto}" alt=""><div><span>${String(index + 1).padStart(2,'0')}</span><strong></strong></div>`;
+    item.innerHTML = `<img src="${targetPhoto}" alt=""><div><span>${String(index + 1).padStart(2,'0')}</span><strong></strong><small></small></div>`;
     item.querySelector('img').alt = `Hình nhận diện ${targetName}`;
     item.querySelector('strong').textContent = targetName;
+    item.querySelector('small').textContent = target.basis || '';
     targets.appendChild(item);
   });
-  modal.querySelector('[data-modal-source]').innerHTML = `Nguồn đối chiếu kỹ thuật: ${product.source || 'Nhãn sản phẩm'}. Ảnh nhận diện: Wikimedia Commons. <a href="sources.html">Xem nguồn và bản quyền ảnh →</a>`;
+  modal.querySelector('[data-modal-source]').innerHTML = `Nguồn đối chiếu kỹ thuật: ${product.source || 'Nhãn sản phẩm'}. <a href="sources.html">Xem nguồn dữ liệu và hình ảnh →</a>`;
   document.body.classList.add('modal-open');
   modal.showModal();
 }

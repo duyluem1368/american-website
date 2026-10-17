@@ -12,8 +12,11 @@ else {
   const list = document.querySelector('[data-product-targets]');
   product.targets.forEach((target, index) => {
     const li = document.createElement('li');
-    li.innerHTML = `<span>${String(index + 1).padStart(2,'0')}</span><strong></strong>`;
+    li.innerHTML = `<img alt=""><span>${String(index + 1).padStart(2,'0')}</span><strong></strong><small></small>`;
+    li.querySelector('img').src = target.image;
+    li.querySelector('img').alt = `Hình nhận diện ${target.name}`;
     li.querySelector('strong').textContent = typeof target === 'string' ? target : target.name;
+    li.querySelector('small').textContent = target.basis || '';
     list.appendChild(li);
   });
 }
