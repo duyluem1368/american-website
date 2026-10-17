@@ -87,3 +87,39 @@ const requestedProduct = new URLSearchParams(location.search).get('product');
 if (requestedProduct && window.PRODUCTS?.[requestedProduct]) {
   openProductModal(window.PRODUCTS[requestedProduct]);
 }
+
+document.querySelectorAll('[data-open-product]').forEach((link) => link.addEventListener('click', (event) => {
+  const slug = link.dataset.openProduct;
+  if (!window.PRODUCTS?.[slug]) return;
+  event.preventDefault();
+  openProductModal(window.PRODUCTS[slug]);
+}));
+
+const trustStrip = document.querySelector('.trust-strip');
+const aboutSection = document.querySelector('.about');
+if (trustStrip && aboutSection) trustStrip.after(aboutSection);
+
+const featuredSlides = [...document.querySelectorAll('.featured-slide')];
+if (featuredSlides.length) {
+  const dots = document.querySelector('.featured-dots');
+  let currentSlide = 0;
+  let rotation;
+  featuredSlides.forEach((slide, index) => {
+    const dot = document.createElement('button');
+    dot.type = 'button'; dot.setAttribute('aria-label', `Xem sản phẩm ${index + 1}`);
+    dot.addEventListener('click', () => { showSlide(index); restartRotation(); });
+    dots.appendChild(dot);
+  });
+  const showSlide = (index) => {
+    currentSlide = (index + featuredSlides.length) % featuredSlides.length;
+    featuredSlides.forEach((slide, i) => { slide.classList.toggle('active', i === currentSlide); slide.setAttribute('aria-hidden', String(i !== currentSlide)); });
+    [...dots.children].forEach((dot, i) => dot.classList.toggle('active', i === currentSlide));
+  };
+  const restartRotation = () => { clearInterval(rotation); rotation = setInterval(() => showSlide(currentSlide + 1), 5500); };
+  document.querySelector('[data-featured-prev]').addEventListener('click', () => { showSlide(currentSlide - 1); restartRotation(); });
+  document.querySelector('[data-featured-next]').addEventListener('click', () => { showSlide(currentSlide + 1); restartRotation(); });
+  const slider = document.querySelector('.featured-slider');
+  slider.addEventListener('mouseenter', () => clearInterval(rotation));
+  slider.addEventListener('mouseleave', restartRotation);
+  showSlide(0); restartRotation();
+}
