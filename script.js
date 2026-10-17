@@ -37,7 +37,7 @@ const productSlugs = {
   'CYTOC 250WP': 'cytoc', 'ABUVA 36EC': 'abuva', 'CLORCET': 'clorcet',
   'NOMICET / NOMIRIUS': 'nomicet', 'ALPHADAX 250WP': 'alphadax',
   'ALYRICE 200WG': 'alyrice', 'SIRAFB 100WP': 'sirafb', 'SUPERMIL 40SL': 'supermil', 'GOLDVIL 50SC': 'goldvil',
-  'ZIMVIL 720WP': 'zimvil'
+  'ZIMVIL 720WP': 'zimvil', 'BEMGREEN 750WP': 'bemgreen'
 };
 document.querySelectorAll('.product-card').forEach((card) => {
   const name = card.querySelector('h3')?.textContent.trim();
