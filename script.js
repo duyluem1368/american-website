@@ -12,6 +12,13 @@ document.querySelectorAll('#primary-nav a').forEach((link) => link.addEventListe
 
 const filterButtons = document.querySelectorAll('.filter button');
 const productCards = document.querySelectorAll('.product-card');
+
+document.querySelectorAll('[data-category-count]').forEach((counter) => {
+  const category = counter.dataset.categoryCount;
+  const count = document.querySelectorAll(`.catalog .product-card[data-category="${category}"]`).length;
+  counter.textContent = `${count} sản phẩm`;
+});
+
 filterButtons.forEach((button) => button.addEventListener('click', () => {
   filterButtons.forEach((item) => item.classList.remove('active'));
   button.classList.add('active');
