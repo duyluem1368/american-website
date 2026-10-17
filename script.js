@@ -33,10 +33,10 @@ if (requestedCategory) selectProductCategory(requestedCategory);
 const productSlugs = {
   'ASARASUPER 500SC': 'asarasuper', 'USATABON 17.5WP': 'usatabon',
   'ACTATOC 200WP': 'actatoc', 'TECHTIMEX 50WG': 'techtime',
-  'SUPITOC 250EC': 'supitoc', 'FITEX X2 300EC': 'fitex', 'SAMTAKO 20SC': 'samtako',
+  'SUPITOC 250EC': 'supitoc', 'FITEX X2 300EC': 'fitex', 'SECTOR 100WP': 'sector', 'SAMTAKO 20SC': 'samtako',
   'CYTOC 250WP': 'cytoc', 'ABUVA 36EC': 'abuva', 'CLORCET': 'clorcet',
   'NOMICET / NOMIRIUS': 'nomicet', 'ALPHADAX 250WP': 'alphadax',
-  'ALYRICE 200WG': 'alyrice', 'SUPERMIL 40SL': 'supermil',
+  'ALYRICE 200WG': 'alyrice', 'SIRAFB 100WP': 'sirafb', 'SUPERMIL 40SL': 'supermil', 'GOLDVIL 50SC': 'goldvil',
   'ZIMVIL 720WP': 'zimvil'
 };
 document.querySelectorAll('.product-card').forEach((card) => {
