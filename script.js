@@ -1,5 +1,16 @@
 const header = document.querySelector('.site-header');
 const menuButton = document.querySelector('.menu-toggle');
+const primaryNav = document.querySelector('#primary-nav');
+if (primaryNav) {
+  const path = location.pathname.split('/').pop() || 'index.html';
+  const activeKey = path === 'about.html' ? 'about' : path === 'products.html' || path === 'product.html' ? 'products' : path === 'journey.html' ? 'journey' : path === 'news.html' ? 'knowledge' : path === 'contact.html' ? 'contact' : 'home';
+  const navItems = [
+    ['home','index.html','Trang chủ'], ['about','about.html','Về American'],
+    ['products','products.html','Sản phẩm'], ['journey','journey.html','Hành trình American'],
+    ['knowledge','news.html','Sâu bệnh cây trồng'], ['contact','contact.html','Liên hệ']
+  ];
+  primaryNav.innerHTML = navItems.map(([key, href, label]) => `<a${key === activeKey ? ' class="active" aria-current="page"' : ''} href="${href}">${label}</a>`).join('');
+}
 menuButton.addEventListener('click', () => {
   const open = header.classList.toggle('open');
   menuButton.setAttribute('aria-expanded', String(open));
