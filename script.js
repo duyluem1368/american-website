@@ -178,13 +178,13 @@ if (trustStrip && aboutSection) {
 }
 
 const activityPriority = [
-  'activity-03.webp', 'activity-02.webp', 'trip-01.webp', 'activity-04.webp',
-  'activity-12.webp', 'activity-11.webp', 'trip-08.webp', 'trip-12.webp',
-  'trip-05.webp', 'trip-07.webp', 'trip-04.webp', 'trip-06.webp',
-  'trip-09.webp', 'trip-11.webp', 'trip-13.webp', 'trip-10.webp',
+  'trip-04.webp', 'activity-03.webp', 'activity-02.webp', 'trip-09.webp',
+  'activity-04.webp', 'trip-07.webp', 'trip-10.webp', 'activity-12.webp',
+  'activity-11.webp', 'trip-11.webp', 'trip-05.webp', 'trip-12.webp',
+  'trip-13.webp', 'trip-06.webp', 'trip-08.webp',
   'activity-13.webp', 'activity-07.webp', 'activity-01.webp', 'activity-09.webp',
-  'activity-10.webp', 'trip-03.webp', 'activity-05.webp', 'activity-06.webp',
-  'activity-08.webp', 'trip-02.webp'
+  'activity-10.webp', 'activity-05.webp', 'activity-06.webp',
+  'activity-08.webp', 'trip-03.webp', 'trip-01.webp', 'trip-02.webp'
 ];
 let activityButtons = [...document.querySelectorAll('[data-activity-image]')];
 if (journeySection && activityButtons.length) {
@@ -196,13 +196,24 @@ if (journeySection && activityButtons.length) {
   const gallery = document.createElement('div');
   gallery.className = 'journey-unified-gallery';
   gallery.setAttribute('aria-label', 'Hình ảnh hành trình American theo quy mô tập thể giảm dần');
-  activityButtons.forEach((button, index) => {
+  const featuredActivityButtons = activityButtons.slice(0, 5);
+  featuredActivityButtons.forEach((button, index) => {
     button.className = `journey-gallery-item${index === 0 ? ' gallery-lead' : index < 3 ? ' gallery-wide' : ''}`;
     button.dataset.eventLabel = button.dataset.activityGallery === 'nha-trang' ? 'Nha Trang 2024' : 'Kỷ niệm 15 năm';
+    if (index === 0 && !button.querySelector(':scope > span')) {
+      button.insertAdjacentHTML('beforeend', '<span><span><small>NHA TRANG · 05.11.2024</small><strong>Đại gia đình American</strong></span><em>Xem ảnh lớn ↗</em></span>');
+    }
     gallery.appendChild(button);
   });
   journeySection.querySelector('.journey-head').after(gallery);
   journeySection.querySelectorAll('.journey-strip,.journey-hint,.journey-album-head').forEach((element) => element.remove());
+  activityButtons.slice(5).forEach((button) => button.remove());
+  const galleryLink = document.createElement('a');
+  galleryLink.className = 'button button-primary journey-view-all';
+  galleryLink.href = 'journey.html';
+  galleryLink.innerHTML = 'Xem toàn bộ thư viện ảnh <span>→</span>';
+  gallery.after(galleryLink);
+  activityButtons = featuredActivityButtons;
 }
 if (activityButtons.length) {
   const activityDialog = document.createElement('dialog');
@@ -235,6 +246,17 @@ if (activityButtons.length) {
     if (event.key === 'ArrowRight') showActivity(activityIndex + 1);
   });
 }
+
+document.body.classList.add('content-protected');
+document.addEventListener('contextmenu', (event) => {
+  if (!event.target.closest('input,textarea,select')) event.preventDefault();
+});
+document.addEventListener('dragstart', (event) => {
+  if (event.target instanceof HTMLImageElement) event.preventDefault();
+});
+document.addEventListener('copy', (event) => {
+  if (!event.target.closest('input,textarea')) event.preventDefault();
+});
 
 const featuredSlides = [...document.querySelectorAll('.featured-slide')];
 if (featuredSlides.length) {
