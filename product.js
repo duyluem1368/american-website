@@ -9,6 +9,14 @@ else {
   document.querySelector('[data-product-name]').textContent = product.name;
   document.querySelector('[data-product-active]').textContent = product.active;
   document.querySelector('[data-product-analysis]').textContent = product.analysis;
+  if (product.images?.length > 1) {
+    let galleryIndex = 0;
+    setInterval(() => {
+      galleryIndex = (galleryIndex + 1) % product.images.length;
+      document.querySelector('[data-product-image]').src = product.images[galleryIndex];
+      document.querySelector('[data-product-image]').alt = `Bao bì ${product.name} mẫu ${galleryIndex + 1}`;
+    }, 3800);
+  }
   const list = document.querySelector('[data-product-targets]');
   product.targets.forEach((target, index) => {
     const li = document.createElement('li');
