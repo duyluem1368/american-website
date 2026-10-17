@@ -67,11 +67,10 @@
       </section>
       <section class="section products">
         <div class="container">
-          <div class="filter" role="group" aria-label="Lọc sản phẩm">
-            <button class="active" data-filter="all">Tất cả</button
-            ><button data-filter="insect">Trừ sâu</button
-            ><button data-filter="weed">Trừ cỏ</button
-            ><button data-filter="disease">Trừ bệnh</button>
+          <div class="catalog-heading" aria-live="polite">
+            <p class="eyebrow blue">Danh mục đang xem</p>
+            <h2 data-category-title>Thuốc trừ sâu</h2>
+            <p data-category-summary></p>
           </div>
           <div class="product-grid catalog">
             <article class="product-card" data-category="insect">
@@ -305,9 +304,9 @@
         </div>
         <div>
           <h3>Sản phẩm</h3>
-          <a href="products.html">Thuốc trừ sâu</a
-          ><a href="products.html">Thuốc trừ cỏ</a
-          ><a href="products.html">Thuốc trừ bệnh</a>
+          <a href="products.html?category=insect">Thuốc trừ sâu</a
+          ><a href="products.html?category=weed">Thuốc trừ cỏ</a
+          ><a href="products.html?category=disease">Thuốc trừ bệnh</a>
         </div>
         <div>
           <h3>Liên hệ</h3>
@@ -320,6 +319,6 @@
       </div>
     </footer>
     <script src="product-data.js?v=gallery-batch5"></script>
-    <script src="script.js?v=auto-category-counts"></script>
+    <script src="script.js?v=linked-product-categories"></script>
   </body>
 </html>

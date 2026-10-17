@@ -21,8 +21,12 @@ document.querySelectorAll('#primary-nav a').forEach((link) => link.addEventListe
   menuButton.setAttribute('aria-expanded', 'false');
 }));
 
-const filterButtons = document.querySelectorAll('.filter button');
 const productCards = document.querySelectorAll('.product-card');
+const categoryMeta = {
+  insect: ['Thuốc trừ sâu', 'Các sản phẩm quản lý sâu ăn lá, sâu đục thân, rầy, rệp và côn trùng chích hút.'],
+  disease: ['Thuốc trừ bệnh', 'Các sản phẩm phòng và quản lý bệnh do nấm, vi khuẩn trên cây trồng.'],
+  weed: ['Thuốc trừ cỏ', 'Các giải pháp quản lý cỏ hòa bản, cỏ lá rộng và nhóm chác lác trên đồng ruộng.']
+};
 
 document.querySelectorAll('[data-category-count]').forEach((counter) => {
   const category = counter.dataset.categoryCount;
@@ -30,23 +34,30 @@ document.querySelectorAll('[data-category-count]').forEach((counter) => {
   counter.textContent = `${count} sản phẩm`;
 });
 
-filterButtons.forEach((button) => button.addEventListener('click', () => {
-  filterButtons.forEach((item) => item.classList.remove('active'));
-  button.classList.add('active');
-  const filter = button.dataset.filter;
+function selectProductCategory(filter, updateUrl = true) {
+  if (!categoryMeta[filter] || !productCards.length) return;
   productCards.forEach((card) => {
-    card.hidden = filter !== 'all' && card.dataset.category !== filter;
+    card.hidden = card.dataset.category !== filter;
   });
-}));
-
-function selectProductCategory(filter) {
-  const button = document.querySelector(`.filter button[data-filter="${filter}"]`);
-  if (button) button.click();
-  document.querySelectorAll('[data-category-jump]').forEach(item => item.classList.toggle('active', item.dataset.categoryJump === filter));
+  document.querySelectorAll('[data-category-jump]').forEach((item) => {
+    const isActive = item.dataset.categoryJump === filter;
+    item.classList.toggle('active', isActive);
+    item.setAttribute('aria-pressed', String(isActive));
+  });
+  const count = document.querySelectorAll(`.catalog .product-card[data-category="${filter}"]`).length;
+  const title = document.querySelector('[data-category-title]');
+  const summary = document.querySelector('[data-category-summary]');
+  if (title) title.textContent = categoryMeta[filter][0];
+  if (summary) summary.textContent = `${count} sản phẩm • ${categoryMeta[filter][1]}`;
+  if (updateUrl) {
+    const url = new URL(location.href);
+    url.searchParams.set('category', filter);
+    history.replaceState({ category: filter }, '', url);
+  }
 }
 document.querySelectorAll('[data-category-jump]').forEach(item => item.addEventListener('click', () => selectProductCategory(item.dataset.categoryJump)));
 const requestedCategory = new URLSearchParams(location.search).get('category');
-if (requestedCategory) selectProductCategory(requestedCategory);
+if (productCards.length) selectProductCategory(categoryMeta[requestedCategory] ? requestedCategory : 'insect', false);
 
 const productSlugs = {
   'ASARASUPER 500SC': 'asarasuper', 'USATABON 17.5WP': 'usatabon',
