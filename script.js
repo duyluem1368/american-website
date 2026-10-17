@@ -20,3 +20,21 @@ filterButtons.forEach((button) => button.addEventListener('click', () => {
     card.hidden = filter !== 'all' && card.dataset.category !== filter;
   });
 }));
+
+const productSlugs = {
+  'ASARASUPER 500SC': 'asarasuper', 'USATABON 17.5WP': 'usatabon',
+  'ACTATOC 200WP': 'actatoc', 'TECHTIME 50WG': 'techtime',
+  'SUPITOC 250EC': 'supitoc', 'SAMTAKO 25SC': 'samtako',
+  'CYTOC 250WP': 'cytoc', 'ABUVA 36EC': 'abuva', 'CLORCET': 'clorcet',
+  'NOMICET / NOMIRIUS': 'nomicet', 'ALPHADAX 250WP': 'alphadax',
+  'ALYRICE 200WG': 'alyrice', 'SUPERMIL 40SL': 'supermil'
+};
+document.querySelectorAll('.product-card').forEach((card) => {
+  const name = card.querySelector('h3')?.textContent.trim();
+  const slug = productSlugs[name];
+  const link = card.querySelector('.product-info a');
+  if (slug && link) {
+    link.href = `product.html?id=${slug}`;
+    link.childNodes[0].textContent = 'Xem chi tiết ';
+  }
+});
