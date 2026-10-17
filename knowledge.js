@@ -27,10 +27,16 @@ window.CROPS.forEach((crop) => {
   const card = document.createElement('button');
   card.type = 'button';
   card.className = 'crop-card';
-  card.innerHTML = `<img src="${crop.cover}" alt="" loading="lazy"><span>Hướng dẫn cây trồng</span><h2></h2><p></p><b>6 đối tượng chính →</b>`;
+  card.innerHTML = `<img src="${crop.cover}" alt="" loading="lazy"><span>Hướng dẫn cây trồng</span><h2></h2><p></p><ul class="crop-target-list"></ul><b>Xem hình ảnh và dấu hiệu nhận diện →</b>`;
   card.querySelector('img').alt = `Kiến thức sâu bệnh trên ${crop.name}`;
   card.querySelector('h2').textContent = crop.name;
   card.querySelector('p').textContent = crop.subtitle;
+  const targetList = card.querySelector('.crop-target-list');
+  crop.pests.forEach(([name]) => {
+    const item = document.createElement('li');
+    item.textContent = name;
+    targetList.appendChild(item);
+  });
   card.addEventListener('click', () => openCrop(crop));
   cropGrid.appendChild(card);
 });
