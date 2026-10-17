@@ -171,7 +171,44 @@ document.querySelectorAll('[data-open-product]').forEach((link) => link.addEvent
 
 const trustStrip = document.querySelector('.trust-strip');
 const aboutSection = document.querySelector('.about');
-if (trustStrip && aboutSection) trustStrip.after(aboutSection);
+const journeySection = document.querySelector('.company-journey');
+if (trustStrip && aboutSection) {
+  trustStrip.after(aboutSection);
+  if (journeySection) aboutSection.after(journeySection);
+}
+
+const activityButtons = [...document.querySelectorAll('[data-activity-image]')];
+if (activityButtons.length) {
+  const activityDialog = document.createElement('dialog');
+  activityDialog.className = 'activity-lightbox';
+  activityDialog.setAttribute('aria-label', 'Ảnh hoạt động của American');
+  activityDialog.innerHTML = '<button class="activity-close" type="button" aria-label="Đóng ảnh">×</button><button class="activity-arrow activity-prev" type="button" aria-label="Ảnh trước">←</button><figure><img alt=""><figcaption></figcaption></figure><button class="activity-arrow activity-next" type="button" aria-label="Ảnh tiếp theo">→</button><span class="activity-count"></span>';
+  document.body.appendChild(activityDialog);
+  let activityIndex = 0;
+  const showActivity = (index) => {
+    activityIndex = (index + activityButtons.length) % activityButtons.length;
+    const source = activityButtons[activityIndex];
+    const photo = activityDialog.querySelector('img');
+    photo.src = source.dataset.activityImage;
+    photo.alt = source.dataset.caption;
+    activityDialog.querySelector('figcaption').textContent = source.dataset.caption;
+    activityDialog.querySelector('.activity-count').textContent = `${activityIndex + 1} / ${activityButtons.length}`;
+  };
+  activityButtons.forEach((button, index) => button.addEventListener('click', () => {
+    showActivity(index);
+    document.body.classList.add('modal-open');
+    activityDialog.showModal();
+  }));
+  activityDialog.querySelector('.activity-close').addEventListener('click', () => activityDialog.close());
+  activityDialog.querySelector('.activity-prev').addEventListener('click', () => showActivity(activityIndex - 1));
+  activityDialog.querySelector('.activity-next').addEventListener('click', () => showActivity(activityIndex + 1));
+  activityDialog.addEventListener('click', (event) => { if (event.target === activityDialog) activityDialog.close(); });
+  activityDialog.addEventListener('close', () => document.body.classList.remove('modal-open'));
+  activityDialog.addEventListener('keydown', (event) => {
+    if (event.key === 'ArrowLeft') showActivity(activityIndex - 1);
+    if (event.key === 'ArrowRight') showActivity(activityIndex + 1);
+  });
+}
 
 const featuredSlides = [...document.querySelectorAll('.featured-slide')];
 if (featuredSlides.length) {
