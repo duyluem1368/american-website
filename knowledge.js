@@ -1,6 +1,40 @@
-const cropGrid=document.querySelector('[data-crop-grid]');
-const cropDialog=document.createElement('dialog');cropDialog.className='crop-modal';cropDialog.innerHTML='<div class="crop-modal-shell"><button type="button" class="crop-close" aria-label="Đóng">×</button><div class="crop-modal-head"><p class="eyebrow blue">Kiến thức cây trồng</p><h2 data-crop-name></h2><p data-crop-subtitle></p></div><div class="crop-pest-grid" data-crop-pests></div><p class="modal-note">Hình ảnh mang tính chẩn đoán tham khảo. Cần khảo sát thực địa và xác định đúng tác nhân trước khi lựa chọn biện pháp quản lý.</p></div>';document.body.appendChild(cropDialog);
-cropDialog.querySelector('.crop-close').addEventListener('click',()=>cropDialog.close());cropDialog.addEventListener('click',e=>{if(e.target===cropDialog)cropDialog.close()});
-function openCrop(crop){cropDialog.querySelector('[data-crop-name]').textContent=crop.name;cropDialog.querySelector('[data-crop-subtitle]').textContent=crop.subtitle;const grid=cropDialog.querySelector('[data-crop-pests]');grid.replaceChildren();crop.pests.forEach(([name,image,desc],i)=>{const card=document.createElement('article');card.innerHTML=`<img src="${image}" alt=""><div><span>${String(i+1).padStart(2,'0')}</span><h3></h3><p></p></div>`;card.querySelector('img').alt=`${name} hại ${crop.name}`;card.querySelector('h3').textContent=name;card.querySelector('p').textContent=desc;grid.appendChild(card)});cropDialog.showModal()}
-window.CROPS.forEach(crop=>{const card=document.createElement('button');card.type='button';card.className='crop-card';card.innerHTML=`<img src="${crop.cover}" alt=""><span>Hướng dẫn cây trồng</span><h2></h2><p></p><b>3 đối tượng chính →</b>`;card.querySelector('img').alt=`Kiến thức sâu bệnh trên ${crop.name}`;card.querySelector('h2').textContent=crop.name;card.querySelector('p').textContent=crop.subtitle;card.addEventListener('click',()=>openCrop(crop));cropGrid.appendChild(card)});
-const requestedCrop=new URLSearchParams(location.search).get('crop');const initialCrop=window.CROPS.find(crop=>crop.id===requestedCrop);if(initialCrop)openCrop(initialCrop);
+const cropGrid = document.querySelector('[data-crop-grid]');
+const cropDialog = document.createElement('dialog');
+cropDialog.className = 'crop-modal';
+cropDialog.innerHTML = '<div class="crop-modal-shell"><button type="button" class="crop-close" aria-label="Đóng">×</button><div class="crop-modal-head"><p class="eyebrow blue">Kiến thức cây trồng</p><h2 data-crop-name></h2><p data-crop-subtitle></p></div><div class="crop-pest-grid" data-crop-pests></div><p class="modal-note">Hình ảnh mang tính chẩn đoán tham khảo. Cần khảo sát thực địa và xác định đúng tác nhân trước khi lựa chọn biện pháp quản lý.</p></div>';
+document.body.appendChild(cropDialog);
+
+cropDialog.querySelector('.crop-close').addEventListener('click', () => cropDialog.close());
+cropDialog.addEventListener('click', (event) => { if (event.target === cropDialog) cropDialog.close(); });
+
+function openCrop(crop) {
+  cropDialog.querySelector('[data-crop-name]').textContent = crop.name;
+  cropDialog.querySelector('[data-crop-subtitle]').textContent = crop.subtitle;
+  const grid = cropDialog.querySelector('[data-crop-pests]');
+  grid.replaceChildren();
+  crop.pests.forEach(([name, image, description], index) => {
+    const card = document.createElement('article');
+    card.innerHTML = `<img src="${image}" alt=""><div><span>${String(index + 1).padStart(2, '0')}</span><h3></h3><p></p></div>`;
+    card.querySelector('img').alt = `${name} hại ${crop.name}`;
+    card.querySelector('h3').textContent = name;
+    card.querySelector('p').textContent = description;
+    grid.appendChild(card);
+  });
+  cropDialog.showModal();
+}
+
+window.CROPS.forEach((crop) => {
+  const card = document.createElement('button');
+  card.type = 'button';
+  card.className = 'crop-card';
+  card.innerHTML = `<img src="${crop.cover}" alt="" loading="lazy"><span>Hướng dẫn cây trồng</span><h2></h2><p></p><b>6 đối tượng chính →</b>`;
+  card.querySelector('img').alt = `Kiến thức sâu bệnh trên ${crop.name}`;
+  card.querySelector('h2').textContent = crop.name;
+  card.querySelector('p').textContent = crop.subtitle;
+  card.addEventListener('click', () => openCrop(crop));
+  cropGrid.appendChild(card);
+});
+
+const requestedCrop = new URLSearchParams(location.search).get('crop');
+const initialCrop = window.CROPS.find((crop) => crop.id === requestedCrop);
+if (initialCrop) openCrop(initialCrop);
