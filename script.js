@@ -124,6 +124,24 @@ document.querySelectorAll('.product-card').forEach((card) => {
   const product = window.PRODUCTS?.[slug];
   const image = card.querySelector('.product-image img');
   if (!product?.images?.length || !image) return;
+  if (!card.querySelector('.gallery-badge')) {
+    const badge = document.createElement('span');
+    badge.className = 'gallery-badge';
+    badge.textContent = `${product.images.length} mẫu`;
+    card.querySelector('.product-image').appendChild(badge);
+  }
+  let index = 0;
+  setInterval(() => {
+    index = (index + 1) % product.images.length;
+    image.src = product.images[index];
+    image.alt = `${product.name} mẫu ${index + 1}`;
+  }, 3800);
+});
+
+document.querySelectorAll('.featured-slide[data-featured]').forEach((slide) => {
+  const product = window.PRODUCTS?.[slide.dataset.featured];
+  const image = slide.querySelector('.featured-image img');
+  if (!product?.images?.length || !image) return;
   let index = 0;
   setInterval(() => {
     index = (index + 1) % product.images.length;
