@@ -28,7 +28,7 @@ window.CROPS.forEach((crop) => {
   card.type = 'button';
   card.className = 'crop-card';
   card.innerHTML = `<img src="${crop.cover}" alt="" loading="lazy"><span>Hướng dẫn cây trồng</span><h2></h2><p></p><ul class="crop-target-list"></ul><b>Xem hình ảnh và dấu hiệu nhận diện →</b>`;
-  card.querySelector('img').alt = `Kiến thức sâu bệnh trên ${crop.name}`;
+  card.querySelector('img').alt = `Ruộng trồng ${crop.name} khỏe mạnh`;
   card.querySelector('h2').textContent = crop.name;
   card.querySelector('p').textContent = crop.subtitle;
   const targetList = card.querySelector('.crop-target-list');
