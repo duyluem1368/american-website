@@ -1,6 +1,6 @@
 const journeyPhotos = [
-  ['assets/company-activities/nha-trang-2024/trip-04.webp','Đại gia đình American tại Gala Dinner Nha Trang 2024','Nha Trang 2024'],
   ['assets/company-activities/activity-03.webp','Tập thể American và Quý đối tác tại lễ kỷ niệm 15 năm','Kỷ niệm 15 năm'],
+  ['assets/company-activities/nha-trang-2024/trip-04.webp','Đại gia đình American tại Gala Dinner Nha Trang 2024','Nha Trang 2024'],
   ['assets/company-activities/activity-02.webp','Tập thể cán bộ nhân viên American mừng dấu mốc 15 năm','Kỷ niệm 15 năm'],
   ['assets/company-activities/nha-trang-2024/trip-09.webp','Tập thể cán bộ American tại Nha Trang','Nha Trang 2024'],
   ['assets/company-activities/activity-04.webp','American tri ân những đóng góp đồng hành','Kỷ niệm 15 năm'],

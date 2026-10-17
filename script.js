@@ -178,7 +178,7 @@ if (trustStrip && aboutSection) {
 }
 
 const activityPriority = [
-  'trip-04.webp', 'activity-03.webp', 'activity-02.webp', 'trip-09.webp',
+  'activity-03.webp', 'trip-04.webp', 'activity-02.webp', 'trip-09.webp',
   'activity-04.webp', 'trip-07.webp', 'trip-10.webp', 'activity-12.webp',
   'activity-11.webp', 'trip-11.webp', 'trip-05.webp', 'trip-12.webp',
   'trip-13.webp', 'trip-06.webp', 'trip-08.webp',
@@ -200,9 +200,6 @@ if (journeySection && activityButtons.length) {
   featuredActivityButtons.forEach((button, index) => {
     button.className = `journey-gallery-item${index === 0 ? ' gallery-lead' : index < 3 ? ' gallery-wide' : ''}`;
     button.dataset.eventLabel = button.dataset.activityGallery === 'nha-trang' ? 'Nha Trang 2024' : 'Kỷ niệm 15 năm';
-    if (index === 0 && !button.querySelector(':scope > span')) {
-      button.insertAdjacentHTML('beforeend', '<span><span><small>NHA TRANG · 05.11.2024</small><strong>Đại gia đình American</strong></span><em>Xem ảnh lớn ↗</em></span>');
-    }
     gallery.appendChild(button);
   });
   journeySection.querySelector('.journey-head').after(gallery);
