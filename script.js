@@ -281,6 +281,23 @@ if (activityButtons.length) {
 }
 
 document.body.classList.add('content-protected');
+const protectImages = (root = document) => {
+  root.querySelectorAll?.('img').forEach((image) => {
+    image.draggable = false;
+    image.setAttribute('draggable', 'false');
+  });
+};
+protectImages();
+new MutationObserver((mutations) => {
+  mutations.forEach((mutation) => mutation.addedNodes.forEach((node) => {
+    if (!(node instanceof Element)) return;
+    if (node.matches('img')) {
+      node.draggable = false;
+      node.setAttribute('draggable', 'false');
+    }
+    protectImages(node);
+  }));
+}).observe(document.body, { childList: true, subtree: true });
 document.addEventListener('contextmenu', (event) => {
   if (!event.target.closest('input,textarea,select')) event.preventDefault();
 });
@@ -289,6 +306,15 @@ document.addEventListener('dragstart', (event) => {
 });
 document.addEventListener('copy', (event) => {
   if (!event.target.closest('input,textarea')) event.preventDefault();
+});
+document.addEventListener('selectstart', (event) => {
+  if (!event.target.closest('input,textarea,select')) event.preventDefault();
+});
+document.addEventListener('keydown', (event) => {
+  const key = event.key.toLowerCase();
+  const protectedShortcut = (event.ctrlKey || event.metaKey) && ['s', 'u', 'p'].includes(key);
+  const developerShortcut = event.key === 'F12' || ((event.ctrlKey || event.metaKey) && event.shiftKey && ['i', 'j', 'c'].includes(key));
+  if (protectedShortcut || developerShortcut) event.preventDefault();
 });
 
 const featuredSlides = [...document.querySelectorAll('.featured-slide')];
