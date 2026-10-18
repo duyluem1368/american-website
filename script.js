@@ -281,6 +281,18 @@ if (activityButtons.length) {
 }
 
 document.body.classList.add('content-protected');
+const copyrightNotice = document.createElement('div');
+copyrightNotice.className = 'copyright-notice';
+copyrightNotice.setAttribute('role', 'status');
+copyrightNotice.setAttribute('aria-live', 'polite');
+copyrightNotice.textContent = 'Bản quyền thuộc về American. Không sao chép dưới bất kỳ hình thức nào.';
+document.body.appendChild(copyrightNotice);
+let copyrightNoticeTimer;
+function showCopyrightNotice() {
+  copyrightNotice.classList.add('show');
+  clearTimeout(copyrightNoticeTimer);
+  copyrightNoticeTimer = setTimeout(() => copyrightNotice.classList.remove('show'), 3000);
+}
 const protectImages = (root = document) => {
   root.querySelectorAll?.('img').forEach((image) => {
     image.draggable = false;
@@ -299,13 +311,22 @@ new MutationObserver((mutations) => {
   }));
 }).observe(document.body, { childList: true, subtree: true });
 document.addEventListener('contextmenu', (event) => {
-  if (!event.target.closest('input,textarea,select')) event.preventDefault();
+  if (!event.target.closest('input,textarea,select')) {
+    event.preventDefault();
+    showCopyrightNotice();
+  }
 });
 document.addEventListener('dragstart', (event) => {
-  if (event.target instanceof HTMLImageElement) event.preventDefault();
+  if (event.target instanceof HTMLImageElement) {
+    event.preventDefault();
+    showCopyrightNotice();
+  }
 });
 document.addEventListener('copy', (event) => {
-  if (!event.target.closest('input,textarea')) event.preventDefault();
+  if (!event.target.closest('input,textarea')) {
+    event.preventDefault();
+    showCopyrightNotice();
+  }
 });
 document.addEventListener('selectstart', (event) => {
   if (!event.target.closest('input,textarea,select')) event.preventDefault();
@@ -314,7 +335,10 @@ document.addEventListener('keydown', (event) => {
   const key = event.key.toLowerCase();
   const protectedShortcut = (event.ctrlKey || event.metaKey) && ['s', 'u', 'p'].includes(key);
   const developerShortcut = event.key === 'F12' || ((event.ctrlKey || event.metaKey) && event.shiftKey && ['i', 'j', 'c'].includes(key));
-  if (protectedShortcut || developerShortcut) event.preventDefault();
+  if (protectedShortcut || developerShortcut) {
+    event.preventDefault();
+    showCopyrightNotice();
+  }
 });
 
 const featuredSlides = [...document.querySelectorAll('.featured-slide')];
