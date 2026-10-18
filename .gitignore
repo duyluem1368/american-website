@@ -1,2 +1,8 @@
 assets/hero-mu-cang-chai-v2.png
 .DS_Store
+android-app/.gradle/
+android-app/local.properties
+android-app/app/build/
+android-app/build/
+*.jks
+*.keystore
